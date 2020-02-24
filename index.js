@@ -28,7 +28,9 @@ canvasEngine.render(ctx);
 
 marker.addEventListener('mousewheel', function ({wheelDelta}) {
   console.log(wheelDelta);
-  background.scale = wheelDelta / 120;
+  background.scale += wheelDelta / 1200;
+  ctx.clearRect(0,0, 600, 400);
+  canvasEngine.render(ctx);
 });
 
 console.log(canvasEngine);

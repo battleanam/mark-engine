@@ -1,5 +1,11 @@
 const marker = document.getElementById('marker');
 const ctx = marker.getContext('2d');
+const markerCache = document.createElement('canvas');
+markerCache.width = marker.width;
+markerCache.height = marker.height;
+const cacheCtx = markerCache.getContext('2d');
+// document.body.append(markerCache)
+
 const canvasEngine = new CanvasEngine({
   width: 600,
   height: 400
@@ -26,11 +32,20 @@ canvasEngine.setBackground(background);
 canvasEngine.addMark(mark);
 canvasEngine.render(ctx);
 
+// let i = 0;
+
 marker.addEventListener('mousewheel', function ({wheelDelta}) {
-  console.log(wheelDelta);
-  background.scale += wheelDelta / 1200;
-  ctx.clearRect(0,0, 600, 400);
-  canvasEngine.render(ctx);
+  const scale = canvasEngine.scale - wheelDelta / 1200;
+  // i = (i + 1) % 2;
+  if (scale >= .1 && scale <= 5) {
+    canvasEngine.setScale(scale);
+  }
+  // if (i === 0) {
+  //   canvasEngine.clear(cacheCtx).render(cacheCtx);
+  // } else {
+    canvasEngine.clear(ctx).render(ctx);
+    // ctx.drawImage(markerCache, 0, 0);
+  // }
 });
 
 console.log(canvasEngine);

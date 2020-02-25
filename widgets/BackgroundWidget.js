@@ -3,7 +3,6 @@ class BackgroundWidget extends RectWidget {
   constructor(props) {
     super(props);
     this.src = '';
-    this.scale = 2;
     this.offsetX = 2;
     this.offsetY = 6;
     Object.assign(this, props);
@@ -16,8 +15,7 @@ class BackgroundWidget extends RectWidget {
     img.src = src;
     img.onload = function () {
       ctx.save();
-      ctx.scale(scale, scale);
-      ctx.drawImage(img, x + dx, y + dy, w, h);
+      ctx.drawImage(img, x + dx, y + dy, w / scale, h / scale);
       ctx.restore();
       callback && callback();
     }

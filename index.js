@@ -1,10 +1,19 @@
 const marker = document.getElementById('marker');
 const ctx = marker.getContext('2d');
-const markerCache = document.createElement('canvas');
-markerCache.width = marker.width;
-markerCache.height = marker.height;
-const cacheCtx = markerCache.getContext('2d');
-// document.body.append(markerCache)
+
+const markerCache = [
+  document.createElement('canvas'),
+  document.createElement('canvas'),
+];
+const cacheCtx = [];
+
+markerCache.forEach((cache, index) => {
+  cache.width = marker.width;
+  cache.height = marker.height;
+  cacheCtx[index] = cache.getContext('2d');
+  // document.body.append(cache);
+});
+
 
 const canvasEngine = new CanvasEngine({
   width: 600,
@@ -12,8 +21,6 @@ const canvasEngine = new CanvasEngine({
 });
 
 const background = new BackgroundWidget({
-  x: 0,
-  y: 0,
   w: 600,
   h: 400,
   src: './assets/img/bug.jpg'
@@ -31,21 +38,29 @@ const mark = new MarkWidget({
 canvasEngine.setBackground(background);
 canvasEngine.addMark(mark);
 canvasEngine.render(ctx);
+canvasEngine.setScale(1.1).render(cacheCtx[0]);
+canvasEngine.setScale(.9).render(cacheCtx[1]);
+canvasEngine.setScale(1);
 
-// let i = 0;
+
+let i = 0;
+let flag = 0;
 
 marker.addEventListener('mousewheel', function ({wheelDelta}) {
+  const delta = Math.abs(wheelDelta / 1200);
   const scale = canvasEngine.scale - wheelDelta / 1200;
-  // i = (i + 1) % 2;
+  flag = true;
   if (scale >= .1 && scale <= 5) {
+    canvasEngine.clear(ctx);
+    ctx.drawImage(markerCache[+(wheelDelta > 0)], 0, 0);
+    canvasEngine.setScale(scale + delta).clear(cacheCtx[0]).render(cacheCtx[0]);
+    canvasEngine.setScale(scale - delta).clear(cacheCtx[1]).render(cacheCtx[1]);
     canvasEngine.setScale(scale);
   }
-  // if (i === 0) {
-  //   canvasEngine.clear(cacheCtx).render(cacheCtx);
-  // } else {
-    canvasEngine.clear(ctx).render(ctx);
-    // ctx.drawImage(markerCache, 0, 0);
-  // }
+});
+
+marker.addEventListener('mousedown', function (e) {
+
 });
 
 console.log(canvasEngine);

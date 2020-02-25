@@ -9,19 +9,27 @@ class RectWidget {
     this.w = 0;
     this.h = 0;
     this.scale = 1;
+    this.offsetX = 0;
+    this.offsetY = 0;
     Object.assign(this, props);
   }
 
   render(ctx) {
-    const {x, y, w, h, scale} = this;
+    const {x, y, w, h, scale, offsetX, offsetY} = this;
     ctx.save();
-    ctx.fillRect(x, y, w / scale, h / scale);
+    ctx.fillRect(x + offsetX, y + offsetY, w / scale, h / scale);
     ctx.restore();
   }
 
 
   setScale(scale) {
     this.scale = scale;
+    return this;
+  }
+
+  move({offsetX, offsetY}) {
+    this.offsetX = offsetX;
+    this.offsetY = offsetY;
     return this;
   }
 }

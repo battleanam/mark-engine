@@ -4,7 +4,7 @@
 class MarkWidget extends RectWidget{
 
   constructor(props) {
-    super(props);
+    super();
     this.color = 'red';
     this.width = 1;
     this.scale = 1;
@@ -12,11 +12,11 @@ class MarkWidget extends RectWidget{
   }
 
   render(ctx) {
-    const {color, width, x, y, w, h, scale} = this;
+    const {color, width, x, y, w, h, scale, offsetX, offsetY} = this;
     ctx.save();
     ctx.strokeStyle = color;
     ctx.lineWidth = width;
-    ctx.strokeRect(x, y, w / scale, h / scale);
+    ctx.strokeRect(x + offsetX, y + offsetY, w / scale, h / scale);
     ctx.restore();
   }
 

@@ -32,4 +32,15 @@ class RectWidget {
     this.offsetY = offsetY;
     return this;
   }
+
+  updateLocation() {
+    const {offsetX, offsetY} = this;
+    this.x += offsetX;
+    this.y += offsetY;
+    return this;
+  }
+
+  moveWithScale(scale) {
+
+  }
 }
